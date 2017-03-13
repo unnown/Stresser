@@ -66,30 +66,41 @@ public class ACManager extends JavaPlugin implements Listener
             }
 
             for (int i = 0; i < num; i++) {
-                Random random = new Random();
-                String name = ChatColor.BLUE + "Bot" + random.nextInt(1000) + i;
-                WorldServer world = ((CraftWorld) Bukkit.getWorlds().get(0)).getHandle();
-                
-                PlayerList playerList = ((CraftServer) Bukkit.getServer()).getHandle();
-                UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8));
-                GameProfile gameProfile = new GameProfile(uuid, name);
-
-                EntityPlayer entityplayer = new EntityPlayer(playerList.getServer(), world, gameProfile, new PlayerInteractManager(world));
-                new DummyPlayerConnection(playerList.getServer(), new DummyNetworkManager(), entityplayer);
-
-                entityplayer.spawnIn(world);
-                entityplayer.playerInteractManager.a((WorldServer) entityplayer.world);
-                entityplayer.playerInteractManager.b(world.getWorldData().getGameType());
-
-                entityplayer.setPosition(random.nextInt(range * 2) - range, 100, random.nextInt(range * 2) - range);
-
-                playerList.players.add(entityplayer);
-                world.addEntity(entityplayer);
-                playerList.a(entityplayer, world);
-
-                sender.sendMessage("Added player " + entityplayer.getName() + ChatColor.RESET + " at " + entityplayer.locX + ", " + entityplayer.locY + ", " + entityplayer.locZ + ".");
+            	
+            	try {
+            		
+	                Random random = new Random();
+	                String name = ChatColor.BLUE + "Bot" + random.nextInt(1000) + i;
+	                WorldServer world = ((CraftWorld) Bukkit.getWorlds().get(0)).getHandle();
+	                
+	                PlayerList playerList = ((CraftServer) Bukkit.getServer()).getHandle();
+	                UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8));
+	                GameProfile gameProfile = new GameProfile(uuid, name);
+	
+	                EntityPlayer entityplayer = new EntityPlayer(playerList.getServer(), world, gameProfile, new PlayerInteractManager(world));
+	                new DummyPlayerConnection(playerList.getServer(), new DummyNetworkManager(), entityplayer);
+	
+	                entityplayer.spawnIn(world);
+	                entityplayer.playerInteractManager.a((WorldServer) entityplayer.world);
+	                entityplayer.playerInteractManager.b(world.getWorldData().getGameType());
+	
+	                entityplayer.setPosition(random.nextInt(range * 2) - range, 100, random.nextInt(range * 2) - range);
+	
+	                playerList.players.add(entityplayer);
+	                world.addEntity(entityplayer);
+	                playerList.a(entityplayer, world);
+	
+	                sender.sendMessage("Added player " + entityplayer.getName() + ChatColor.RESET + " at " + entityplayer.locX + ", " + entityplayer.locY + ", " + entityplayer.locZ + ".");
+	                TimeUnit.MILLISECONDS.sleep(200); //1 tick
+	                
+            	} catch (Exception ex) {
+            		log.log(Level.WARNING, ex.getMessage());
+            	}
+            	
             }
 
+            sender.sendMessage("Added " + num + " bots!");
+            
             return true;
         }
 
@@ -117,7 +128,7 @@ public class ACManager extends JavaPlugin implements Listener
 
         if (command.getName().equalsIgnoreCase("testTimers")) {
         	
-            int time = 2000;
+            int time = 60 * 1000;
             int delay = 50;
             
             if (args.length > 0) {
@@ -203,10 +214,14 @@ public class ACManager extends JavaPlugin implements Listener
     					}
     					    
     					writer.close();
-    					    
+    					
+    					sender.sendMessage("Saved timers to file");
+    					
     				} catch (Exception ex) {
     					log.log(Level.WARNING, ex.getMessage());
     				}			  
+    			} else {
+    				sender.sendMessage("No tasks found?");
     			}
     		}	  
         	return true;
