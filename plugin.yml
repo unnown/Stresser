@@ -1,0 +1,14 @@
+name: Stresser
+main: com.frontiers.Stresser.ACManager
+version: 1.0
+
+commands:
+  spawnbot:
+    description: Spawn a fake player at a random location
+    usage: /<command> [count] [radius]
+  killbots:
+    description: Disconnect all fake players
+  debug:
+    description: Show tick rate, memory usage, and number of chunks loaded
+  testTimers:
+    description: test timers

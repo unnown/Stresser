@@ -1,0 +1,3 @@
+name: Stresser
+main: com.frontiers.Stresser.ACManager
+version: 1.0
